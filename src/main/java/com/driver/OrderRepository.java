@@ -49,12 +49,12 @@ public class OrderRepository {
 
     public Order findOrderById(String orderId){
         // your code here
-        return orderMap.getOrDefault(orderId, null);
+        return orderMap.get(orderId);
     }
 
     public DeliveryPartner findPartnerById(String partnerId){
         // your code here
-        return partnerMap.getOrDefault(partnerId, null);
+        return partnerMap.get(partnerId);
     }
 
     public Integer findOrderCountByPartnerId(String partnerId){
@@ -69,7 +69,7 @@ public class OrderRepository {
 
     public List<String> findOrdersByPartnerId(String partnerId){
         // your code here
-        Set<String> orders = partnerToOrderMap.getOrDefault(partnerId, new HashSet<>());
+        Set<String> orders = partnerToOrderMap.get(partnerId);
         return new ArrayList<>(orders);
     }
 
@@ -87,7 +87,7 @@ public class OrderRepository {
             partnerMap.remove(partnerId);
 
             // Retrieve the set of orders assigned to this partner
-            Set<String> assignedOrders = partnerToOrderMap.getOrDefault(partnerId, new HashSet<>());
+            Set<String> assignedOrders = partnerToOrderMap.get(partnerId);
 
             // Remove partner from partnerToOrderMap
             partnerToOrderMap.remove(partnerId);
@@ -160,7 +160,7 @@ public class OrderRepository {
         int latestTime = Integer.MIN_VALUE;
         String lastDeliveryTime = "";
         int time = 0;
-        Set<String> partnerOrders = partnerToOrderMap.getOrDefault(partnerId, new HashSet<>());
+        Set<String> partnerOrders = partnerToOrderMap.get(partnerId);
         for (String orderId : partnerOrders) {
             Order order = orderMap.get(orderId);
             if (order != null) {
