@@ -49,12 +49,12 @@ public class OrderRepository {
 
     public Order findOrderById(String orderId){
         // your code here
-        return orderMap.get(orderId);
+        return orderMap.getOrDefault(orderId, null);
     }
 
     public DeliveryPartner findPartnerById(String partnerId){
         // your code here
-        return partnerMap.get(partnerId);
+        return partnerMap.getOrDefault(partnerId, null);
     }
 
     public Integer findOrderCountByPartnerId(String partnerId){
@@ -63,8 +63,11 @@ public class OrderRepository {
 //            return partnerToOrderMap.get(partnerId).size();
 //        }
 //        return 0;
-        DeliveryPartner deliveryPartner = partnerMap.get(partnerId);
-        return deliveryPartner.getNumberOfOrders();
+        if (partnerToOrderMap.containsKey(partnerId)) {
+            DeliveryPartner deliveryPartner = partnerMap.get(partnerId);
+            return deliveryPartner.getNumberOfOrders();
+        }
+        return 0;
     }
 
     public List<String> findOrdersByPartnerId(String partnerId){
@@ -87,7 +90,7 @@ public class OrderRepository {
             partnerMap.remove(partnerId);
 
             // Retrieve the set of orders assigned to this partner
-            Set<String> assignedOrders = partnerToOrderMap.get(partnerId);
+            Set<String> assignedOrders = partnerToOrderMap.getOrDefault(partnerId, new HashSet<>());
 
             // Remove partner from partnerToOrderMap
             partnerToOrderMap.remove(partnerId);
@@ -127,7 +130,7 @@ public class OrderRepository {
         // your code here
         int unassignedCount = 0;
         for (String orderId : orderMap.keySet()) {
-            if (!orderToPartnerMap.containsKey(orderId)) {
+            if (orderToPartnerMap.get(orderId) == null) {
                 unassignedCount++;
             }
         }
@@ -160,7 +163,7 @@ public class OrderRepository {
         int latestTime = Integer.MIN_VALUE;
         String lastDeliveryTime = "";
         int time = 0;
-        Set<String> partnerOrders = partnerToOrderMap.get(partnerId);
+        Set<String> partnerOrders = partnerToOrderMap.getOrDefault(partnerId, new HashSet<>());
         for (String orderId : partnerOrders) {
             Order order = orderMap.get(orderId);
             if (order != null) {
