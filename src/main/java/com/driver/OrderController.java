@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("orders")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+
+    private OrderService orderService = new OrderService();
 
     @PostMapping("/add-order")
     public ResponseEntity<String> addOrder(@RequestBody Order order){
@@ -102,7 +102,7 @@ public class OrderController {
         return new ResponseEntity<>(countOfOrders, HttpStatus.CREATED);
     }
 
-    @GetMapping("/get-count-of-orders-left-after-given-time/{partnerId}")
+    @GetMapping("/get-count-of-orders-left-after-given-time/{partnerId}/{time}")
     public ResponseEntity<Integer> getOrdersLeftAfterGivenTimeByPartnerId(@PathVariable String time, @PathVariable String partnerId){
 
         Integer countOfOrders = 0;
